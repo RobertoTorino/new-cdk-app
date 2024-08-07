@@ -55,9 +55,13 @@ echo "Error! Please check your logs."
 esac
 done
 
+echo
+echo "$YELLOW""*****"
 echo "$YELLOW""Initializing app, using Typescript"
 cdk init app --language typescript
 
+echo
+echo "$YELLOW""*****"
 echo "$YELLOW""Configuring the app"
 # Define the source files and their respective destinations
 source_files=(
@@ -97,20 +101,29 @@ for i in "${!source_files[@]}"; do
     fi
 done
 
+echo
+echo "$YELLOW""*****"
 echo "$YELLOW""Uninstall deprecated packages"
-npm uninstall source-map-support
-npm uninstall inflight@1.0.6
+npm r source-map-support
+npm r inflight@1.0.6
+npm r glob@7.2.3
 
-# Initialize Go project:
+echo
+echo "$YELLOW""*****"
+echo "$YELLOW""Initialize Go project"
 go mod init github.com/new-cdk-app
 go get -u github.com/aws/aws-lambda-go/lambda
 go mod tidy
 
+echo
+echo "$YELLOW""*****"
 echo "$YELLOW""Add and commit changes to git"
 git add .
 git commit -m "First commit for the example-cdk-app repository."
-git log
+git log --pretty=oneline
 
+echo
+echo "$YELLOW""*****"
 echo "$YELLOW""List the stack(s)"
 cdk ls
 
