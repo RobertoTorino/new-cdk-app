@@ -101,7 +101,7 @@ npm r source-map-support
 npm r glob@7.2.3
 ```
 
-**3 - Optional: if you use script 2 update your .gitignore file with these entries:**
+**3 - Optional: if you use script 2, update your `.gitignore` file with these entries:**
 
 ```text
 # Node artifact files
@@ -152,9 +152,9 @@ test-report.xml
 !.npmrc
 ```
 
-**4 - If you use script 2 copy the makefile, the new .gitignore file and the optimized jest.config.js file to your repository and overwrite the old files. Check if they are identical to the source files.**
+**4 - If you use script 2 copy the makefile, the new `.gitignore` file and the optimized `jest.config.js` file to your repository and overwrite the old files. Check if they are identical to the source files.**
 
-**5 - Add logic for the stacks. Search for the `.ts` file in the bin folder and edit it so that it is identical to the one below. We added the environment variables and an `enum` and `const` to declare some variables. We also add the tags here to make sure all resources in the template are tagged. You can copy the contents or type it. Just make sure that you don't change your app or stackname to prevent them from being deleted. You can also delete this line `import `source-map-support/register`: see step 2a.;**
+**5 - Add logic for the stacks. Search for the `.ts` file in the bin folder and edit it so that it is identical to the one below. We added the environment variables and an `enum` and `const` to declare some variables. We also add the tags here to make sure all resources in the template are tagged. You can copy the contents or type it. Just make sure that you don't change your app or stackname to prevent them from being deleted. You can also delete this line `import `source-map-support/register`: see step 2a. Remember to change the stack and app names to the names of your stack and app!**
 
 ```typescript
 #!/usr/bin/env node
@@ -171,7 +171,7 @@ enum Environment {
     dev = 'dev'
 }
 
-const application = 'cnca-cfd-cdk-example';
+const application = 'cnca-cdk-example';
 
 const addTags = (stack: Stack, environment: Environment) => {
     Tags.of(stack).add('Application', application, {
@@ -200,10 +200,12 @@ app.synth();
 
 ```
 
-**3 - Run the tests.**
-ToDo
+**5a - 
 
-**5 - Then inside the "cdk-app-example" folder run these commands:**
+**10 - Run the tests.**
+
+
+**11 - Then inside the "cdk-app-example" folder run these commands:**
 
 * `npx cdk synth -q`   emits the synthesized CloudFormation template, check the `cdk.out` folder for a template.json file.
 * `tsc`  compile typescript to js, check for errors.
@@ -211,15 +213,19 @@ ToDo
 * `aws sso login`  use your terminal to log in to your AWS account.
 * `npx cdk deploy`  deploy this stack to your default AWS account.
 * `aws s3 ls`  check for the 'my-nca-demo-bucket' in your AWS account.
-* `npx cdk destroy`  destroy the resources, wait for the process to finish.
 
 Most likely you have to initialize Go in this project.
 
 **Open the AWS console and look for the resources you just created.**
 
+
+**Final step - After you finished you can clean up the resources with `npx cdk destroy name_of_your_stack`, wait for the process to finish.**
+
+## Congratulations!
+
 ---
 
-**If you want to remove the demo go to the directory where you installed it and run: `rm -rvf cdk-app-example`. If you re-run the demo it will first remove the old one.**                  
+**If you want to remove the demo repository go to the directory where you installed it and run: `rm -rvf cdk-app-example`. If you re-run the demo it will automatically remove the old one.**                  
 **This is a very simple stack, in a real world scenario you would use a pipeline to deploy your resources.**
 
 **As you can see in the diagram, CDK generated a custom resource, that is because we used the auto delete objects option for the s3 Bucket.**
@@ -232,7 +238,7 @@ You can set environment variables to change CLI settings.
 **SNYK_TOKEN** Override the token in your Snyk config settings (~/.config/configstore/snyk.json).              
 **SNYK_CFG_<KEY>** Allows you to override any key that is also available as a snyk config option.              
 Example, **SNYK_CFG_ORG=<your_org>>** overrides the default org option in config.     
-Check your snyk config file:
+Check your local snyk config file:
 ```shell
 snyk config
 ```

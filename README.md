@@ -1,6 +1,6 @@
 # AWS CDK Workshop
 
-## Deploy a Lambda and a S3 Bucket with the AWS CDK
+## Deploy a Lambda function and a S3 Bucket with the AWS CDK
 
 ![cdk.png](images/cdk.png)
 

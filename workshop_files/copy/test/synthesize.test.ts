@@ -7,7 +7,7 @@ describe("Synthesize tests", () => {
     expect(() => {
       new Stack(app, "Stack", {
         description: "Stack",
-        env,
+        env: lvkProd,
       });
     }).not.toThrow();
   });

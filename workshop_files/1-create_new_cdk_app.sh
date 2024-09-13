@@ -68,16 +68,12 @@ source_files=(
     "$SOURCE_DIR/.gitignore"
     "$SOURCE_DIR/Makefile"
     "$SOURCE_DIR/functions"
-    "$SOURCE_DIR/images"
     "$SOURCE_DIR/test"
-    "$SOURCE_DIR/dev"
 )
 
 destination_paths=(
     "$HOME/cdk-app-example/bin"
     "$HOME/cdk-app-example/lib"
-    "$HOME/cdk-app-example"
-    "$HOME/cdk-app-example"
     "$HOME/cdk-app-example"
     "$HOME/cdk-app-example"
     "$HOME/cdk-app-example"
