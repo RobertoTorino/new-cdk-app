@@ -11,7 +11,9 @@
 - AWS CDK Toolkit
 - Python
 
-**Info:iIf you start this workshop you will first run a script, this will install the most recent AWS CDK version and set up the basics for this new CDK project using Typescript. You get a simple Lambda and an S3 Bucket. It will execute a first commit and shows the results. It will synthesize the app and if successful it shows the newly created stack. It will also provide you with some basic tests.**
+Info: if you start this workshop you can choose between two scripts:
+1. A regular script which will install the most recent AWS CDK version and set up the basics for a new CDK project using Typescript. You get a simple Lambda and an S3 Bucket. It will execute a first commit and shows the results. It will synthesize the app and if successful it shows the newly created stack. It will also provide you with some basic tests.
+2. A variable script where you can choose the name of your app, the rest of the logic is the same as for scri[pt 1.
 
 
 ## Development process via Makefile
@@ -31,13 +33,17 @@ Look at the Makefile for the other options.
 
 ### Instructions
 
-**1 - Run this script, fill in the variables and let it finish. Your repository will be created in the root of your $HOME folder.**
+**1 - Run the preferred script, fill in the optional variables and let it finish. Your repository will be created in the root of your $HOME folder.**
 ```shell 
-1-new-cdk-app.sh
+create_new_cdk_app.sh
+```
+or
+```shell 
+create_new_cdk-app_with_variable_name.sh
 ```
 
 **2 - Refactor the package.json file with the following entries. There is an example provided which you can just copy and paste or type in manually. Be sure to do a `npm install` when you are finished and update the packages if needed.
-We need this if we want to create proper test suites.**
+We need this if we want to create and run proper test suites.**
 ```json
 {
   "name": "cdk-app-example",
@@ -77,7 +83,7 @@ We need this if we want to create proper test suites.**
 }
 ```
 
-**2a - Optional - remove deprecated packages with this script (check the workshop files directory):**
+**2a - Optional: remove deprecated packages with this script (check the workshop files directory):**
 
 ```shell
 #!/bin/bash
@@ -91,7 +97,7 @@ npm r source-map-support
 npm r glob@7.2.3
 ```
 
-**3 - Update your .gitignore file with these entries:**
+**3 - Optional: update your .gitignore file with these entries:**
 
 ```text
 # Node artifact files
@@ -142,7 +148,7 @@ test-report.xml
 !.npmrc
 ```
 
-4 - If the copy action was success full (which is part of the script) the makefile and the optimized jest.config.js files are copied over to the new project. Check if they are identical to the source files.
+4 - If the copy action was success full (which is part of the script) the makefile, the new .gitignore file and the optimized jest.config.js file are copied over to the new project. Check if they are identical to the source files.
 
 **5 - Add logic for the Lambda's.**
 ToDo
