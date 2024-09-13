@@ -106,6 +106,8 @@ git log
 echo "$YELLOW""List the stack(s)"
 cdk ls
 
+git add .
+
 open .
 
 # Exit script.

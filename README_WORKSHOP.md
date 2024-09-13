@@ -17,7 +17,7 @@ For intellij enable code completion for nodejs. intellij/settings, type in nodej
 
 **Info: if you start this workshop you can choose between two scripts:**            
 1. A regular script which will install the most recent AWS CDK version and set up the basics for a new CDK project using Typescript. It will synthesize the app and if successful it shows the newly created stack.
-2. A variable script where you can choose the name of your app, the rest of the logic is the same as for scri[pt 1.
+2. A variable script where you can choose the name of your app, and where you have to manually refactor some logic. the rest of the logic is the same as for scri[pt 1.
 3. For both variant we will create a simple Lambda function and an S3 Bucket and will also add some tests, just follow the instructions below.
 
 
@@ -37,7 +37,7 @@ Look at the Makefile for the other options.
 
 ### Instructions
 
-**1 - Run the preferred script, you can choose between script 1 or 2. Fill in the optional variables and let it finish. Your repository will be created in the root of your $HOME folder.**
+**1 - Run the preferred script, you can choose between script 1 or 2. Fill in the optional variables and let it finish. Your repository will be created in the root of your $HOME folder. The scripts are located in the `workshop files` directory.**
 ```shell 
 1-create_new_cdk_app.sh
 ```
@@ -46,7 +46,7 @@ or
 2-create_new_cdk-app_with_variable_name.sh
 ```
 
-**2 - Refactor the package.json file with the following entries. This is an example where you can just copy and paste the lines. Be sure to do a `npm install` when you are finished and update the packages if needed.
+**2 - Refactor the package.json file with the following entries. This is an example where you can just copy and paste the lines. Be sure to use the latest cdk version and do a `npm install` when you are finished, update other packages if needed.
 We need this adjustments if we want to create and run proper test suites.**
 ```json
 {
@@ -56,13 +56,26 @@ We need this adjustments if we want to create and run proper test suites.**
     "cdk-app-example": "bin/cdk-app-example.js"
   },
   "scripts": {
-    "build clean": "tsc --build --clean"
+    "build": "tsc",
+    "build clean": "tsc --build --clean",
+    "watch": "tsc -w",
+    "test": "jest",
+    "cdk": "cdk"
   },
   "devDependencies": {
+    "@types/jest": "^29.5.12",
+    "@types/node": "22.5.4",
+    "aws-cdk": "2.158.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.2.5",
+    "ts-node": "^10.9.2",
+    "typescript": "~5.6.2",
     "eslint": "^9.6.0",
     "jest-junit": "16.0.0"
   },
   "dependencies": {
+    "aws-cdk-lib": "2.158.0",
+    "constructs": "^10.0.0"
   },
   "engines": {
     "npm": ">=9.0.0",
@@ -85,6 +98,7 @@ We need this adjustments if we want to create and run proper test suites.**
     ]
   }
 }
+
 ```
 
 **2a - Optional: remove deprecated packages with this script (check the workshop files directory):**
@@ -162,7 +176,7 @@ import * as cdk from 'aws-cdk-lib';
 import {CdkAppExampleStack} from '../lib/cdk-app-example-stack';
 import {Stack, Tags} from "aws-cdk-lib";
 
-const env = {
+export const env = {
     account: process.env.CDK_SYNTH_ACCOUNT || process.env.CDK_DEFAULT_ACCOUNT,
     region: process.env.CDK_SYNTH_REGION || process.env.CDK_DEFAULT_REGION,
 };
@@ -191,28 +205,56 @@ const addTags = (stack: Stack, environment: Environment) => {
 const app = new cdk.App();
 const cdkAppExampleStack = new CdkAppExampleStack(app, 'CdkAppExampleStack', {
     stackName: 'CdkAppExampleStack',
-    description: 'Example stack for onboarding.',
+    description: 'Example stack for CF&D onboarding.',
     env,
 });
 addTags(cdkAppExampleStack, Environment.dev);
 
 app.synth();
-
 ```
 
-**5a - 
+**5a - Search for the stack in the `lib` folder and refactor the stack like the example below to build the bucket and the Lambda function resources.**
 
-**10 - Run the tests.**
+```typescript
+import * as cdk from 'aws-cdk-lib';
+import {aws_iam, aws_s3, RemovalPolicy} from 'aws-cdk-lib';
+import {Construct} from 'constructs';
 
 
-**11 - Then inside the "cdk-app-example" folder run these commands:**
+export class CdkAppExampleStack extends cdk.Stack {
+    constructor(scope: Construct, id: string, props?: cdk.StackProps) {
+        super(scope, id, props);
 
-* `npx cdk synth -q`   emits the synthesized CloudFormation template, check the `cdk.out` folder for a template.json file.
-* `tsc`  compile typescript to js, check for errors.
-* `tsc --build --clean` clean up js.
+        const myExampleBucket = new aws_s3.Bucket(this, 'my-cnca-demo-bucket', {
+            bucketName: 'my-cnca-demo-bucket',
+            // disable access control lists (ACLs) and take ownership of every object in your bucket.
+            objectOwnership: aws_s3.ObjectOwnership.BUCKET_OWNER_ENFORCED,
+            // permissions on new objects are private by default and don’t allow public access.
+            blockPublicAccess: aws_s3.BlockPublicAccess.BLOCK_ALL,
+            encryption: aws_s3.BucketEncryption.S3_MANAGED,
+            enforceSSL: true,
+            versioned: true,
+            removalPolicy: RemovalPolicy.DESTROY,
+            // with this setting cdk will deploy a lambda and a custom resource.
+            autoDeleteObjects: true,
+        });
+        // give the AWS account owner read access
+        myExampleBucket.grantRead(new aws_iam.AccountRootPrincipal());
+    }
+}
+```
+
+**10 - Build the app and run the tests. You will notice 2 test reports. One is for the code coverage, click through to find out more. The other one is for the Snyk security scan. See if it detected any problems and try to fix them if it found any problems.**
+
+```shell
+make build
+```
+
+**11 - Go to the `cdk-app-example` folder and run these commands, this will deploy your resources in AWS.**
+
 * `aws sso login`  use your terminal to log in to your AWS account.
 * `npx cdk deploy`  deploy this stack to your default AWS account.
-* `aws s3 ls`  check for the 'my-nca-demo-bucket' in your AWS account.
+* `aws s3 ls`  check for the 'my-cnca-demo-bucket' in your AWS account.
 
 Most likely you have to initialize Go in this project.
 

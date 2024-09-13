@@ -3,7 +3,7 @@ import * as cdk from 'aws-cdk-lib';
 import {CdkAppExampleStack} from '../lib/cdk-app-example-stack';
 import {Stack, Tags} from "aws-cdk-lib";
 
-const env = {
+export const env = {
     account: process.env.CDK_SYNTH_ACCOUNT || process.env.CDK_DEFAULT_ACCOUNT,
     region: process.env.CDK_SYNTH_REGION || process.env.CDK_DEFAULT_REGION,
 };
@@ -12,7 +12,7 @@ enum Environment {
     dev = 'dev'
 }
 
-const application = 'cnca-cfd-cdk-example';
+const application = 'cnca-cdk-example';
 
 const addTags = (stack: Stack, environment: Environment) => {
     Tags.of(stack).add('Application', application, {

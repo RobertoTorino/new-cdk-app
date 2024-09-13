@@ -69,11 +69,13 @@ source_files=(
     "$SOURCE_DIR/Makefile"
     "$SOURCE_DIR/functions"
     "$SOURCE_DIR/test"
+    "$SOURCE_DIR/package.json"
 )
 
 destination_paths=(
     "$HOME/cdk-app-example/bin"
     "$HOME/cdk-app-example/lib"
+    "$HOME/cdk-app-example"
     "$HOME/cdk-app-example"
     "$HOME/cdk-app-example"
     "$HOME/cdk-app-example"
@@ -120,6 +122,8 @@ echo
 echo "*****"
 echo "List the stack(s)"
 cdk ls
+
+git add .
 
 open .
 

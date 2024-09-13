@@ -7,8 +7,8 @@ export class CdkAppExampleStack extends cdk.Stack {
     constructor(scope: Construct, id: string, props?: cdk.StackProps) {
         super(scope, id, props);
 
-        const myExampleBucket = new aws_s3.Bucket(this, 'my-nca-demo-bucket', {
-            bucketName: 'my-nca-demo-bucket',
+        const myExampleBucket = new aws_s3.Bucket(this, 'my-cnca-demo-bucket', {
+            bucketName: 'my-cnca-demo-bucket',
             // disable access control lists (ACLs) and take ownership of every object in your bucket.
             objectOwnership: aws_s3.ObjectOwnership.BUCKET_OWNER_ENFORCED,
             // permissions on new objects are private by default and don’t allow public access.

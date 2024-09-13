@@ -1,4 +1,5 @@
-import { App } from 'aws-cdk-lib';
+import { App, Stack } from 'aws-cdk-lib';
+import { env } from '../bin/cdk-app-example';
 
 describe("Synthesize tests", () => {
   const app = new App();
@@ -18,4 +19,3 @@ describe("Synthesize tests", () => {
     }).not.toThrow();
   });
 });
-
