@@ -1,4 +1,4 @@
-# Dev info
+# Development info
 
 ## Latest AWS CDK docs
 > **For the latest CDK documentation, run `cdk docs`.**
@@ -46,8 +46,7 @@ For existing projects you can decide for yourself to opt in if this feature flag
 ```
 
 > **Pipeline:**   
-> We assume you use a self-mutating pipeline, then if you add new application stages in the source code, or new stacks, the pipeline will automatically reconfigure itself to deploy those new stages and stacks. 
-> For deploying feature branches you probably need this:
+> We assume you use a self-mutating pipeline, then if you add new application stages in the source code, or new stacks, the pipeline will automatically reconfigure itself to deploy those new stages and stacks. For deploying you probably need this:
 > ```shell
 > PIPELINE_BRANCH=$(git branch --show-current) npx cdk deploy PipelineStack
 > ```

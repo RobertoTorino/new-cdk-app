@@ -31,4 +31,4 @@ compare:
 	npx cdk diff
 ## Cleanup the whole environment and remove all temporary files.
 clean:
-	rm -rvf cdk.out coverage test-results diagram test/__snapshots__ test/*.html test/.dccache functions/bootstrap functions/bootstrap.zip && git clean -df
+	rm -rvf cdk.out coverage test-results diagram test/__snapshots__ test/*.html test/.dccache functions/bootstrap functions/bootstrap.zip && git add . && git clean -df
