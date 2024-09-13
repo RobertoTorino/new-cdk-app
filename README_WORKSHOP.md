@@ -11,9 +11,14 @@
 - AWS CDK Toolkit
 - Python
 
-Info: if you start this workshop you can choose between two scripts:
-1. A regular script which will install the most recent AWS CDK version and set up the basics for a new CDK project using Typescript. You get a simple Lambda and an S3 Bucket. It will execute a first commit and shows the results. It will synthesize the app and if successful it shows the newly created stack. It will also provide you with some basic tests.
+For intellij enable code completion for nodejs. intellij/settings, type in nodejs /language & frameworks/Node.Js then enable coding assistance for Node.js. see screenshot.
+
+![codings_assistance_nodejs.png](images/codings_assistance_nodejs.png)
+
+**Info: if you start this workshop you can choose between two scripts:**            
+1. A regular script which will install the most recent AWS CDK version and set up the basics for a new CDK project using Typescript. It will synthesize the app and if successful it shows the newly created stack.
 2. A variable script where you can choose the name of your app, the rest of the logic is the same as for scri[pt 1.
+3. For both variant we will create a simple Lambda function and an S3 Bucket and will also add some tests, just follow the instructions below.
 
 
 ## Development process via Makefile
@@ -25,25 +30,24 @@ To simplify the development process and provide an ability to run tests locally 
 * Compare local stacks with the deployed stacks: `make compare`
 * Cleanup the environment: `make clean`
 
-Look at the Makefile for the other options.                 
-> **Tip:**                      
-> When getting an error running the makefile, check the Makefile with`cat -e -t -v Makefile`                        
-> It shows the presence of tabs with ^I and line endings with $.                    
+Look at the Makefile for the other options.
+
+---
 
 
 ### Instructions
 
-**1 - Run the preferred script, fill in the optional variables and let it finish. Your repository will be created in the root of your $HOME folder.**
+**1 - Run the preferred script, you can choose between script 1 or 2. Fill in the optional variables and let it finish. Your repository will be created in the root of your $HOME folder.**
 ```shell 
-create_new_cdk_app.sh
+1-create_new_cdk_app.sh
 ```
 or
 ```shell 
-create_new_cdk-app_with_variable_name.sh
+2-create_new_cdk-app_with_variable_name.sh
 ```
 
-**2 - Refactor the package.json file with the following entries. There is an example provided which you can just copy and paste or type in manually. Be sure to do a `npm install` when you are finished and update the packages if needed.
-We need this if we want to create and run proper test suites.**
+**2 - Refactor the package.json file with the following entries. This is an example where you can just copy and paste the lines. Be sure to do a `npm install` when you are finished and update the packages if needed.
+We need this adjustments if we want to create and run proper test suites.**
 ```json
 {
   "name": "cdk-app-example",
@@ -97,7 +101,7 @@ npm r source-map-support
 npm r glob@7.2.3
 ```
 
-**3 - Optional: update your .gitignore file with these entries:**
+**3 - Optional: if you use script 2 update your .gitignore file with these entries:**
 
 ```text
 # Node artifact files
@@ -148,10 +152,53 @@ test-report.xml
 !.npmrc
 ```
 
-4 - If the copy action was success full (which is part of the script) the makefile, the new .gitignore file and the optimized jest.config.js file are copied over to the new project. Check if they are identical to the source files.
+**4 - If you use script 2 copy the makefile, the new .gitignore file and the optimized jest.config.js file to your repository and overwrite the old files. Check if they are identical to the source files.**
 
-**5 - Add logic for the Lambda's.**
-ToDo
+**5 - Add logic for the stacks. Search for the `.ts` file in the bin folder and edit it so that it is identical to the one below. We added the environment variables and an `enum` and `const` to declare some variables. We also add the tags here to make sure all resources in the template are tagged. You can copy the contents or type it. Just make sure that you don't change your app or stackname to prevent them from being deleted. You can also delete this line `import `source-map-support/register`: see step 2a.;**
+
+```typescript
+#!/usr/bin/env node
+import * as cdk from 'aws-cdk-lib';
+import {CdkAppExampleStack} from '../lib/cdk-app-example-stack';
+import {Stack, Tags} from "aws-cdk-lib";
+
+const env = {
+    account: process.env.CDK_SYNTH_ACCOUNT || process.env.CDK_DEFAULT_ACCOUNT,
+    region: process.env.CDK_SYNTH_REGION || process.env.CDK_DEFAULT_REGION,
+};
+
+enum Environment {
+    dev = 'dev'
+}
+
+const application = 'cnca-cfd-cdk-example';
+
+const addTags = (stack: Stack, environment: Environment) => {
+    Tags.of(stack).add('Application', application, {
+        applyToLaunchedInstances: true,
+        includeResourceTypes: [],
+    });
+    Tags.of(stack).add('Stage', environment, {
+        applyToLaunchedInstances: true,
+        includeResourceTypes: [],
+    });
+    Tags.of(stack).add('Stackname', stack.stackName, {
+        applyToLaunchedInstances: true,
+        includeResourceTypes: [],
+    });
+};
+
+const app = new cdk.App();
+const cdkAppExampleStack = new CdkAppExampleStack(app, 'CdkAppExampleStack', {
+    stackName: 'CdkAppExampleStack',
+    description: 'Example stack for onboarding.',
+    env,
+});
+addTags(cdkAppExampleStack, Environment.dev);
+
+app.synth();
+
+```
 
 **3 - Run the tests.**
 ToDo
@@ -177,7 +224,7 @@ Most likely you have to initialize Go in this project.
 
 **As you can see in the diagram, CDK generated a custom resource, that is because we used the auto delete objects option for the s3 Bucket.**
 
-![extended_diagram.png](copy/images/extended_diagram.png)                                
+![extended_diagram.png](images/extended_diagram.png)                                
 
 ## Environment variables for Snyk CLI
 You can set environment variables to change CLI settings.

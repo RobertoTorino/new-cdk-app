@@ -1,11 +1,15 @@
 {
-  "name": "cdk-app-example",
+  "name": "YOU_APP_NAME_HERE",
   "version": "0.1.0",
   "bin": {
-    "cdk-app-example": "bin/cdk-app-example.js"
+    "cdk-app-example": "bin/",YOU_APP_NAME_HERE".js"
   },
   "scripts": {
-    "build clean": "tsc --build --clean"
+    "build clean": "tsc --build --clean",
+    "build": "tsc",
+    "watch": "tsc -w",
+    "test": "jest",
+    "cdk": "cdk"
   },
   "devDependencies": {
     "eslint": "^9.6.0",

@@ -23,7 +23,7 @@ cdk.out
 *.d.ts
 !jest.config.js
 !/lib/
-!/test/
+!/workshop_files/test/
 !.eslintignore
 !.eslintrc.js
 !.npmignore
@@ -33,7 +33,7 @@ cdk.out
 !package-lock.json
 
 # Folders
-/test/__snapshots__/
+/workshop_files/test/__snapshots__/
 /test-results/
 /.tests/junit.xml
 cdk.out/
