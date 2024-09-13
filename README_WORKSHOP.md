@@ -1,4 +1,4 @@
-# Get Started with the AWS CDK Workshop 
+# Workshop: Get Started with the AWS CDK 
 
 ### Prerequisites:
 - IDE for your programming language
@@ -11,12 +11,12 @@
 - AWS CDK Toolkit
 - Python
 
-For intellij enable code completion for nodejs. intellij/settings, type in nodejs /language & frameworks/Node.Js then enable coding assistance for Node.js. see screenshot.
+For intellij IDE enable code completion for nodejs >> intellij/settings, type in nodejs > /language & frameworks/Node.Js then enable coding assistance for Node.js.Sse screenshot.
 
 ![codings_assistance_nodejs.png](images/codings_assistance_nodejs.png)
 
 **Info: if you start this workshop you can choose between two scripts:**            
-1. A regular script which will install the most recent AWS CDK version and set up the basics for a new CDK project using Typescript. It will synthesize the app and if successful it shows the newly created stack.
+1. A regular script which will install the most recent AWS CDK version and set up the basics for a new CDK project using TypeScript. It will synthesize the app and if successful it shows the newly created stack.
 2. A variable script where you can choose the name of your app, and where you have to manually refactor some logic. the rest of the logic is the same as for scri[pt 1.
 3. For both variant we will create a simple Lambda function and an S3 Bucket and will also add some tests, just follow the instructions below.
 
@@ -166,7 +166,7 @@ test-report.xml
 !.npmrc
 ```
 
-**4 - If you use script 2 copy the makefile, the new `.gitignore` file and the optimized `jest.config.js` file to your repository and overwrite the old files. Check if they are identical to the source files.**
+**4 - Optional: if you use script 2, copy the makefile, the new `.gitignore` file and the optimized `jest.config.js` file to your repository and overwrite the old files. Check if they are identical to the source files.**
 
 **5 - Add logic for the stacks. Search for the `.ts` file in the bin folder and edit it so that it is identical to the one below. We added the environment variables and an `enum` and `const` to declare some variables. We also add the tags here to make sure all resources in the template are tagged. You can copy the contents or type it. Just make sure that you don't change your app or stackname to prevent them from being deleted. You can also delete this line `import `source-map-support/register`: see step 2a. Remember to change the stack and app names to the names of your stack and app!**
 
@@ -244,49 +244,58 @@ export class CdkAppExampleStack extends cdk.Stack {
 }
 ```
 
-**10 - Build the app and run the tests. You will notice 2 test reports. One is for the code coverage, click through to find out more. The other one is for the Snyk security scan. See if it detected any problems and try to fix them if it found any problems.**
+**6 - Build the app and run the tests. You will notice 2 test reports. One is for the code coverage, click through it to find out more. The other one is for the Snyk security scan. See if the Snyk iac scan detected any problems. Try to fix them if any problems are found.**
 
 ```shell
 make build
 ```
 
-**11 - Go to the `cdk-app-example` folder and run these commands, this will deploy your resources in AWS.**
+**7 - Go to the `cdk-app-example` folder and run these commands, this will deploy your resources in AWS.**
 
-* `aws sso login`  use your terminal to log in to your AWS account.
-* `npx cdk deploy`  deploy this stack to your default AWS account.
-* `aws s3 ls`  check for the 'my-cnca-demo-bucket' in your AWS account.
+**8a - Use your terminal to log in to your AWS account.**
+```shell
+aws sso login
+```
 
-Most likely you have to initialize Go in this project.
+**8b - Deploy this stack to your default AWS account.**
+```shell
+npx cdk deploy
+```
 
-**Open the AWS console and look for the resources you just created.**
+**8c - Check for the 'my-cnca-demo-bucket' in your AWS account.**
+```shell
+npx cdk deploy
+```
 
+**9 - Open the AWS console and look for the resources you just created.**
 
-**Final step - After you finished you can clean up the resources with `npx cdk destroy name_of_your_stack`, wait for the process to finish.**
+**10 - Final step, after you finished all steps you can clean up the resources with `npx cdk destroy name_of_your_stack` and wait for the process to finish.**
 
-## Congratulations!
+## Congratulations! 
 
 ---
 
-**If you want to remove the demo repository go to the directory where you installed it and run: `rm -rvf cdk-app-example`. If you re-run the demo it will automatically remove the old one.**                  
-**This is a very simple stack, in a real world scenario you would use a pipeline to deploy your resources.**
+**If you want to remove the demo repository go to the directory where you installed it and run: `rm -rvf cdk-app-example`. If you want to re-run the demo, it will automatically remove the old one.**                  
+**This is a very simple stack, in a real world scenario you would use a pipeline to deploy your resources. We might look into that in another Workshop.**
 
 **As you can see in the diagram, CDK generated a custom resource, that is because we used the auto delete objects option for the s3 Bucket.**
 
 ![extended_diagram.png](images/extended_diagram.png)                                
 
+**Extra info.**             
 ## Environment variables for Snyk CLI
 You can set environment variables to change CLI settings.
 
 **SNYK_TOKEN** Override the token in your Snyk config settings (~/.config/configstore/snyk.json).              
 **SNYK_CFG_<KEY>** Allows you to override any key that is also available as a snyk config option.              
 Example, **SNYK_CFG_ORG=<your_org>>** overrides the default org option in config.     
-Check your local snyk config file:
+Check your local snyk config file, this will show the Snyk token.:
 ```shell
 snyk config
 ```
 
 ## Snyk to HTML
-You can use snyk-to-html to create an HTML report.
+For the security report we used `snyk-to-html` to create the HTML report.
 Install snyk-to-html:
 ```shell
 npm i -g snyk-to-html
